@@ -59,7 +59,6 @@ public class HelloTest {
     @Test
     public void testLoadNumbers() throws IOException {
         List<Integer> numbers = hello.loadNumbers("data.txt");
-
         assertEquals(24, numbers.size());
         assertEquals(new Integer(1001), numbers.get(0));
         assertEquals(new Integer(1), numbers.get(23));
