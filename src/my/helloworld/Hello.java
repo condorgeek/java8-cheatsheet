@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Hello {
 
@@ -40,7 +43,7 @@ public class Hello {
         return bignumber(value.split(" "));
     }
 
-    String[] load(String filename) throws FileNotFoundException, IOException {
+    String[] loadfile(String filename) throws FileNotFoundException, IOException {
 
         File file = new File(filename);
         InputStreamReader input = new InputStreamReader(new FileInputStream(file));
@@ -55,14 +58,32 @@ public class Hello {
         return lines.toArray(new String[lines.size()]);
     }
 
-    String[] loadfile(String filename) throws FileNotFoundException, IOException {
+    List<Integer> loadNumbers(String filename) throws FileNotFoundException, IOException {
+
+        File file = new File(filename);
+        InputStreamReader input = new InputStreamReader(new FileInputStream(file));
+        BufferedReader reader = new BufferedReader(input);
+
+        List<Integer> numbers = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            numbers.addAll(Stream.of(line.split("\\s"))
+                    .map(Integer::valueOf)
+                    .collect(Collectors.toList()));
+        }
+
+        return numbers.stream()
+                .sorted((a, b) -> a > b ? -1 : 0)
+                .collect(Collectors.toList());
+    }
+
+    String[] loadfile2(String filename) throws FileNotFoundException, IOException {
 
         File file = new File(filename);
         List<String> lines = Files.readAllLines(file.toPath());
 
         return lines.toArray(new String[lines.size()]);
     }
-
 
     String sortString(String value) {
         StringBuffer buffer = new StringBuffer();
@@ -81,6 +102,16 @@ public class Hello {
         }
 
         return buffer.toString();
+    }
+
+    String reverse2(String value) {
+        StringBuffer buffer = new StringBuffer();
+        value.chars().forEach( c -> buffer.insert(0, (char) c));
+        return buffer.toString();
+    }
+
+    String reverse3(String value) {
+        return new StringBuffer(value).reverse().toString();
     }
 
     Integer[] generatePrimes(int number) {
@@ -123,6 +154,11 @@ public class Hello {
     int factorial(int number) {
         if (number == 1) return 1;
         return number * factorial(number - 1);
+    }
+
+    int fact2(int number) {
+        return IntStream.rangeClosed(2, number)
+                .reduce(1, (a, b) -> a * b);
     }
 
     void list(String path) throws IOException {

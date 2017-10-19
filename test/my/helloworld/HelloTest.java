@@ -3,6 +3,7 @@ package my.helloworld;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +26,7 @@ public class HelloTest {
 
     @Test
     public void testMax() {
-        Long number = hello.max(new String[]{"77", "332", null, "10", "500"});
+        Long number = hello.max(new String[]{"77", "332", null, "10", "500", ""});
         assertEquals(new Long(500), number);
     }
 
@@ -37,17 +38,31 @@ public class HelloTest {
 
     @Test
     public void testLoadData() throws IOException {
-        String[] lines = hello.load("data.txt");
-        assertEquals(1, lines.length);
+        String[] lines = hello.loadfile("data.txt");
+        assertEquals(3, lines.length);
 
-        String[] ll = hello.loadfile("data.txt");
-        assertEquals(1, ll.length);
+        String[] ll = hello.loadfile2("data.txt");
+        assertEquals(3, ll.length);
 
         Long number = hello.splitnumber(lines[0]);
         assertEquals(new Long(10011002811L), number);
 
         Long nn = hello.splitnumber(ll[0]);
         assertEquals(new Long(10011002811L), nn);
+    }
+
+    /** data.txt
+     100 28 11 1001
+     10 09 35 44 51 543 34 21 27 1
+     45 28 96 75 41 66 73 89 65 48
+    */
+    @Test
+    public void testLoadNumbers() throws IOException {
+        List<Integer> numbers = hello.loadNumbers("data.txt");
+
+        assertEquals(24, numbers.size());
+        assertEquals(new Integer(1001), numbers.get(0));
+        assertEquals(new Integer(1), numbers.get(23));
     }
 
     @Test
@@ -60,6 +75,12 @@ public class HelloTest {
     public void testReverse() {
         String reversed = hello.reverse("zabcxdef12");
         assertEquals("21fedxcbaz", reversed);
+
+        String reversed2 = hello.reverse2("zabcxdef12");
+        assertEquals("21fedxcbaz", reversed2);
+
+        String reversed3 = hello.reverse3("zabcxdef12");
+        assertEquals("21fedxcbaz", reversed3);
     }
 
     @Test
@@ -95,6 +116,9 @@ public class HelloTest {
     @Test
     public void testFactorial() {
         int factorial = hello.factorial(5);
+        assertEquals(120, factorial);
+
+        int fact2 = hello.fact2(5);
         assertEquals(120, factorial);
     }
 
